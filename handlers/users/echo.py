@@ -4,6 +4,13 @@ from aiogram.dispatcher import FSMContext
 from loader import dp
 
 
+
+@dp.message_handler(lambda message: message.text and 'ты кто?' in message.text.lower())
+async def bot_echo(message: types.Message):
+    await message.answer(f"просто бот")
+
+
+
 # Эхо хендлер, куда летят текстовые сообщения без указанного состояния
 @dp.message_handler(state=None)
 async def bot_echo(message: types.Message):
