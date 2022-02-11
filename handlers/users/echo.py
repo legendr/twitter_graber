@@ -1,13 +1,33 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.builtin import Command
+from aiogram.dispatcher.filters.builtin import CommandStart, CommandHelp, CommandSettings
+from keyboards.default.text_buttons import settings_buttons
 
 from loader import dp
+
+@dp.message_handler(CommandStart())
+async def bot_start(message: types.Message):
+    await message.answer(f"Привет, {message.from_user.full_name} Я 🤖 бот, который 🔎 парсит twitter")
+
+@dp.message_handler(CommandHelp())
+async def bot_help(message: types.Message):
+    text = ("Список команд: ",
+            "/start - Начать диалог",
+            "/help - Получить справку",
+            "/settings - Настройки парсинга")
+    await message.answer("\n".join(text))
+
+@dp.message_handler(CommandSettings())
+async def bot_settings(message: types.Message):
+    await message.answer(f'................', reply_markup=settings_buttons)
 
 
 
 @dp.message_handler(lambda message: message.text and 'ты кто?' in message.text.lower())
 async def bot_echo(message: types.Message):
     await message.answer(f"просто бот")
+
 
 
 
